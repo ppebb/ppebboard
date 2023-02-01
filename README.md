@@ -55,7 +55,8 @@ require("ppebboard").setup({
 For examples of possible center items, see [my config](https://github.com/pollen00/nvim-conf/blob/main/lua/ppebboard-config.lua#L52)
 
 If you use [indent-blankline](https://github.com/lukas-reineke/indent-blankline.nvim), add "ppebboard" to filetype_exclude in indent-blankline's setup. [Example](https://github.com/pollen00/nvim-conf/blob/main/lua/indent-blankline-config.lua#L13). <br>
-If you use [vim-better-whitespace](https://github.com/ntpeters/vim-better-whitespace), add `vim.g.indent_blankline_filetype_exclude = { "ppebboard" }` to your init.lua.
+If you use [vim-better-whitespace](https://github.com/ntpeters/vim-better-whitespace), add `vim.g.better_whitespace_filetypes_blacklist = { "ppebboard" }
+` to your init.lua.
 
 ## Feature Requests
 I'm open to adding features to this plugin. Make an issue describing your request, or message me at ppeb#4062 on Discord, or @ppeb:matrix.org on matrix.
