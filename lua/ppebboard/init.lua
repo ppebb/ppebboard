@@ -82,11 +82,8 @@ function M:register_autocmds()
     self.cursor_moved_id = vim.api.nvim_create_autocmd("CursorMoved", {
         group = group,
         desc = "[Ppebboard] Stop cursor from moving to the wrong place",
+        buffer = self.bufnr,
         callback = function(tbl)
-            if vim.bo[tbl.buf].filetype ~= "ppebboard" then
-                return
-            end
-
             local extmarks = vim.api.nvim_buf_get_extmarks(self.bufnr, self.nsid, 0, -1, {})
             local pos = vim.api.nvim_win_get_cursor(self.winhl)
             local current_index = pos[1] - #_config.header.lines
