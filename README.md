@@ -14,13 +14,13 @@ Configuration is straightforward, with the available options being -
 require("ppebboard").setup({
     header = {
         lines = {
-            " ____             _     _                         _ ",
-            "|  _ \ _ __   ___| |__ | |__   ___   __ _ _ __ __| |",
-            "| |_) | '_ \ / _ \ '_ \| '_ \ / _ \ / _` | '__/ _` |",
-            "|  __/| |_) |  __/ |_) | |_) | (_) | (_| | | | (_| |",
-            "|_|   | .__/ \___|_.__/|_.__/ \___/ \__,_|_|  \__,_|",
-            "      |_|",
-        }
+            [[ ____             _     _                         _ ]],
+            [[|  _ \ _ __   ___| |__ | |__   ___   __ _ _ __ __| |]],
+            [[| |_) | '_ \ / _ \ '_ \| '_ \ / _ \ / _` | '__/ _` |]],
+            [[|  __/| |_) |  __/ |_) | |_) | (_) | (_| | | | (_| |]],
+            [[|_|   | .__/ \___|_.__/|_.__/ \___/ \__,_|_|  \__,_|]],
+            [[      |_|]],
+        },
         highlight = "PpebboardHeader", -- Optional highlight group to apply to the header. Can be set to DashboardHeader if your colorscheme supports dashboard-nvim
     },
     center = {
@@ -38,7 +38,7 @@ require("ppebboard").setup({
         },
         icon_highlight = "PpebboardIcon", -- These options will highlight every item, unless set inside of the item. All optional
         text_highlight = "PpebboardText", -- Can be set to DashboardCenter if your colorscheme supports dashboard-nvim
-        shortcut_highlight = "PpebboardShortcut" -- Can be set to DashboardShortCut if your colorscheme supports dashboard-nvim
+        shortcut_highlight = "PpebboardShortcut", -- Can be set to DashboardShortCut if your colorscheme supports dashboard-nvim
         spacing = true, -- Should each item have an empty line between them
     },
     footer = {

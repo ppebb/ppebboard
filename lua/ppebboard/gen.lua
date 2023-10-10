@@ -1,9 +1,14 @@
 local M = {}
 
+local registered = false
+
 local function center_align(text_arr)
     local numspaces = {}
     for _, line in pairs(text_arr) do
-        table.insert(numspaces, math.floor((vim.o.columns - vim.api.nvim_strwidth(line)) / 2))
+        table.insert(
+            numspaces,
+            math.floor((vim.fn.winwidth(vim.api.nvim_get_current_win()) - vim.api.nvim_strwidth(line)) / 2)
+        )
     end
 
     local centered = {}
@@ -14,6 +19,7 @@ local function center_align(text_arr)
     return centered
 end
 
+local new_center = true
 local function create_center(config)
     local text = {}
     local new_items = {} -- Prevent highlighting from breaking if spacing is applied
@@ -26,7 +32,7 @@ local function create_center(config)
                 .. (config.center.items[i].shortcut or "")
         )
 
-        if config.center.spacing then
+        if config.center.spacing and new_center then
             table.insert(new_items, config.center.items[i])
 
             if #config.center.items - i ~= 0 then
@@ -36,14 +42,22 @@ local function create_center(config)
         end
     end
 
-    if config.center.spacing then
-        config.center.items = new_items
+    if config.center.spacing and new_center then
+        for k, v in ipairs(new_items) do
+            config.center.items[k] = v
+        end
+        new_center = false
     end
 
     return center_align(text)
 end
 
 local function register_keybinds(bufnr, center, start_line)
+    if registered then
+        return
+    end
+    registered = true
+
     for _, item in pairs(center.items) do
         if item.shortcut ~= nil and item.action ~= nil then
             local gsubbed = item.shortcut:gsub(" ", "")
@@ -73,9 +87,14 @@ local function register_keybinds(bufnr, center, start_line)
     })
 end
 
-function M.create_board(bufnr, config)
-    if not vim.bo.modifiable then
-        vim.bo.modifiable = true
+function M.create_board(bufnr, winhl, config)
+    winhl = winhl
+
+    local oldwin = vim.api.nvim_get_current_win()
+    vim.api.nvim_set_current_win(winhl)
+
+    if not vim.api.nvim_get_option_value("modifiable", { buf = bufnr }) then
+        vim.api.nvim_set_option_value("modifiable", true, { buf = bufnr })
     end
 
     local hi_ns = vim.api.nvim_create_namespace("ppebboard")
@@ -91,6 +110,10 @@ function M.create_board(bufnr, config)
     local center_text = create_center(config)
     vim.api.nvim_buf_set_lines(bufnr, #header_text, -1, false, center_text)
     for i = 1, #center_text do
+        if config.center.items[i].text == "" then
+            i = i + 1
+        end
+
         local _, start_col = center_text[i]:find("%s+")
         local text_start_col = start_col + (config.center.items[i].icon and #config.center.items[i].icon or 0)
         local sc_start_col = text_start_col + (#config.center.items[i].text or -1)
@@ -151,6 +174,8 @@ function M.create_board(bufnr, config)
     end
 
     register_keybinds(bufnr, config.center, #header_text)
+
+    vim.api.nvim_set_current_win(oldwin)
 
     vim.bo.filetype = "ppebboard"
     vim.opt.buftype = "nofile"
