@@ -37,7 +37,7 @@ local defaults = {
         lines = {
             "",
             "",
-            "Neovim loaded " .. #vim.tbl_keys(packer_plugins) .. " plugins", -- Plugin count example for packer
+            -- "Neovim loaded " .. #vim.tbl_keys(packer_plugins) .. " plugins", -- Plugin count example for packer
         },
         highlight = "PpebbaordFooter", -- Optional highlight group to apply to the footer. Can be set to Dashboardfooter if your colorscheme supports dashboard-nvim
     },
