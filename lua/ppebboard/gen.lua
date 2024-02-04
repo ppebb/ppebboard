@@ -180,6 +180,7 @@ function M.create_board(bufnr, winhl, config)
     vim.bo.filetype = "ppebboard"
     vim.opt.buftype = "nofile"
     vim.cmd("setlocal nolist") -- why does vim.opt_local.nolist not exist????
+    vim.opt_local.relativenumber = false
     vim.opt_local.number = false
     vim.opt.laststatus = 0
     vim.bo.modifiable = false
